@@ -1,61 +1,62 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Windows.Kinect;
+using Assets.KinectView.Scripts;
+using Assets.KinectView.Util;
 
-public class BodySourceManager : MonoBehaviour 
+public class BodySourceManager : MonoBehaviour
 {
-    private KinectSensor _kinectSensor;
-    private BodyFrameReader _reader;
-    public Body[] BodyData { get; private set; }
+    private Kinect _kinect;
+    public IEnumerable<BodyViewModel> BodyViewModels { get; private set; }
 
-    void Start () 
+    void Start()
     {
-        _kinectSensor = KinectSensor.GetDefault();
-
-        if (_kinectSensor == null) return;
-
-        _reader = _kinectSensor.BodyFrameSource.OpenReader();
-            
-        if (!_kinectSensor.IsOpen)
-        {
-            _kinectSensor.Open();
-        }
+        _kinect = new Kinect(FrameSourceTypes.Body);
     }
-    
-    void Update () 
+
+    void Update()
     {
-        if (_reader == null) return;
-        BodyData = GetUpdatedBodyData();
+        var updatedBodyData = GetUpdatedBodyData();
+        if (updatedBodyData == null) return;
+        BodyViewModels =  updatedBodyData
+            .Select(body => new BodyViewModel(body.IsTracked, body.TrackingId, GetJoints(body)));
     }
-    
+
     void OnApplicationQuit()
     {
-        if (_reader != null)
-        {
-            _reader.Dispose();
-            _reader = null;
-        }
-
-        if (_kinectSensor == null) return;
-
-        if (_kinectSensor.IsOpen)
-        {
-            _kinectSensor.Close();
-        }
-            
-        _kinectSensor = null;
+        _kinect.Dispose();
     }
 
     private Body[] GetUpdatedBodyData()
     {
-        using (var frame = _reader.AcquireLatestFrame())
+        if (_kinect.Reader == null) return null;
+
+        var multiSourceFrame = _kinect.Reader.AcquireLatestFrame();
+
+        if (multiSourceFrame == null) return null;
+
+        using (var frame = multiSourceFrame.BodyFrameReference.AcquireFrame())
         {
             if (frame == null) return null;
 
-            var bodyData = new Body[_kinectSensor.BodyFrameSource.BodyCount];
+            var bodyData = new Body[_kinect.Sensor.BodyFrameSource.BodyCount];
 
             frame.GetAndRefreshBodyData(bodyData);
             return bodyData;
         }
+    }
+
+    private Dictionary<JointType, JointViewModel> GetJoints(Body body)
+    {
+        var joints = new Dictionary<JointType, JointViewModel>();
+        foreach (var joint in body.Joints.Values)
+        {
+            var jointPosition = joint.Position;
+            var colorPoint = _kinect.Sensor.CoordinateMapper.MapCameraPointToColorSpace(jointPosition);
+            joints[joint.JointType] = new JointViewModel(joint.JointType, joint.TrackingState, new Vector2(colorPoint.X, colorPoint.Y));
+        }
+        return joints;
     }
 }

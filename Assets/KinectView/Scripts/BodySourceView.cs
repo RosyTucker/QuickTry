@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+using Assets.KinectView.Scripts;
+using Assets.KinectView.Util;
 using Kinect = Windows.Kinect;
 
 public class BodySourceView : MonoBehaviour 
@@ -56,7 +57,7 @@ public class BodySourceView : MonoBehaviour
             return;
         }
         
-        var bodyData = _BodyManager.BodyData;
+        var bodyData = _BodyManager.BodyViewModels;
         if (bodyData == null)
         {
             return;
@@ -110,17 +111,17 @@ public class BodySourceView : MonoBehaviour
     private GameObject CreateBodyObject(ulong id)
     {
         var body = new GameObject("Body:" + id);
-        
+        body.transform.parent = gameObject.transform;
+
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
         {
             var jointObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            
+
             var lr = jointObj.AddComponent<LineRenderer>();
             lr.SetVertexCount(2);
             lr.material = BoneMaterial;
             lr.SetWidth(0.05f, 0.05f);
             
-            jointObj.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
             jointObj.name = jt.ToString();
             jointObj.transform.parent = body.transform;
         }
@@ -128,52 +129,62 @@ public class BodySourceView : MonoBehaviour
         return body;
     }
     
-    private void RefreshBodyObject(Kinect.Body body, GameObject bodyObject)
+    private void RefreshBodyObject(BodyViewModel body, GameObject bodyObject)
     {
-        for (var jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
+        for (var joint = Kinect.JointType.SpineBase; joint <= Kinect.JointType.ThumbRight; joint++)
         {
-            var sourceJoint = body.Joints[jt];
-            Kinect.Joint? targetJoint = null;
+            var sourceJoint = body.Joints[joint];
+            JointViewModel targetJoint = null;
             
-            if(_BoneMap.ContainsKey(jt))
+            if(_BoneMap.ContainsKey(joint))
             {
-                targetJoint = body.Joints[_BoneMap[jt]];
+                targetJoint = body.Joints[_BoneMap[joint]];
             }
             
-            var jointObj = bodyObject.transform.FindChild(jt.ToString());
+            var jointObj = bodyObject.transform.FindChild(joint.ToString());
             jointObj.localPosition = GetVector3FromJoint(sourceJoint);
             
-            var lr = jointObj.GetComponent<LineRenderer>();
-            if(targetJoint.HasValue)
+            if(targetJoint != null)
             {
-                lr.SetPosition(0, jointObj.localPosition);
-                lr.SetPosition(1, GetVector3FromJoint(targetJoint.Value));
-                lr.SetColors(GetColorForState (sourceJoint.TrackingState), GetColorForState(targetJoint.Value.TrackingState));
-            }
-            else
-            {
-                lr.enabled = false;
+                DrawBone(jointObj, sourceJoint, targetJoint);
             }
         }
     }
-    
+
+    private Vector3 GetVector3FromJoint(JointViewModel joint)
+    {
+        var bounds = gameObject.GetComponent<Collider>().bounds;
+        var xCoord = MapToUiCoordinates(joint.Position.x, 0, 1920, bounds.min.x, bounds.max.x);
+        var yCoord = MapToUiCoordinates(joint.Position.y, 0, 1080, bounds.min.y, bounds.max.y);
+        return new Vector3(-xCoord, -yCoord, 0);
+    }
+
+    private void DrawBone(Transform jointObj, JointViewModel sourceJoint, JointViewModel targetJoint)
+    {
+        var lineRenderer = jointObj.GetComponent<LineRenderer>();
+        lineRenderer.SetPosition(0, jointObj.localPosition);
+        lineRenderer.SetPosition(1, GetVector3FromJoint(targetJoint));
+        lineRenderer.SetColors(GetColorForState(sourceJoint.TrackingState), GetColorForState(targetJoint.TrackingState));
+    }
+
+
+    private static float MapToUiCoordinates(float numberToMap, float minInput, float maxInput, float minOutput, float maxOutput)
+    {
+    return (numberToMap - minInput) * (maxOutput - minOutput) / (maxInput - minInput) + minOutput;
+    }
+
     private static Color GetColorForState(Kinect.TrackingState state)
     {
         switch (state)
         {
-        case Kinect.TrackingState.Tracked:
-            return Color.green;
+            case Kinect.TrackingState.Tracked:
+                return Color.green;
 
-        case Kinect.TrackingState.Inferred:
-            return Color.red;
+            case Kinect.TrackingState.Inferred:
+                return Color.red;
 
-        default:
-            return Color.black;
+            default:
+                return Color.black;
         }
-    }
-    
-    private static Vector3 GetVector3FromJoint(Kinect.Joint joint)
-    {
-        return new Vector3(joint.Position.X * 10, joint.Position.Y * 10, joint.Position.Z * 10);
     }
 }
