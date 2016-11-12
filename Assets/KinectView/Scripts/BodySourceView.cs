@@ -10,11 +10,10 @@ public class BodySourceView : MonoBehaviour
     public Material BoneMaterial;
     public GameObject BodySourceManager;
 
-    private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
-    private BodySourceManager _BodyManager;
+    private readonly Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
+    private BodySourceManager _bodyManager;
 
-    private Dictionary<Kinect.JointType, Kinect.JointType> _BoneMap = new Dictionary<Kinect.JointType, Kinect.JointType>
-        ()
+    private readonly Dictionary<Kinect.JointType, Kinect.JointType> _boneMap = new Dictionary<Kinect.JointType, Kinect.JointType>
         {
             {Kinect.JointType.FootLeft, Kinect.JointType.AnkleLeft},
             {Kinect.JointType.AnkleLeft, Kinect.JointType.KneeLeft},
@@ -49,13 +48,13 @@ public class BodySourceView : MonoBehaviour
             return;
         }
 
-        _BodyManager = BodySourceManager.GetComponent<BodySourceManager>();
-        if (_BodyManager == null)
+        _bodyManager = BodySourceManager.GetComponent<BodySourceManager>();
+        if (_bodyManager == null)
         {
             return;
         }
 
-        var bodyData = _BodyManager.BodyViewModels;
+        var bodyData = _bodyManager.BodyViewModels;
         if (bodyData == null)
         {
             return;
@@ -128,10 +127,10 @@ public class BodySourceView : MonoBehaviour
 
     private void RefreshBodyObject(BodyViewModel body, GameObject bodyObject)
     {
-        foreach (Kinect.JointType joint in _BoneMap.Keys)
+        foreach (Kinect.JointType joint in _boneMap.Keys)
         {
             var sourceJoint = body.Joints[joint];
-            var targetJoint = body.Joints[_BoneMap[joint]];
+            var targetJoint = body.Joints[_boneMap[joint]];
 
             var jointObj = bodyObject.transform.FindChild(joint.ToString());
             jointObj.localPosition = GetVector3FromJoint(sourceJoint);
@@ -160,8 +159,7 @@ public class BodySourceView : MonoBehaviour
     }
 
 
-    private static float MapToUiCoordinates(float numberToMap, float minInput, float maxInput, float minOutput,
-        float maxOutput)
+    private static float MapToUiCoordinates(float numberToMap, float minInput, float maxInput, float minOutput, float maxOutput)
     {
         var output = (numberToMap - minInput)*(maxOutput - minOutput)/(maxInput - minInput) + minOutput;
         return LimitInclusive(output, minOutput, maxOutput);
