@@ -4,67 +4,58 @@ using Windows.Kinect;
 
 public class BodySourceManager : MonoBehaviour 
 {
-    private KinectSensor _Sensor;
-    private BodyFrameReader _Reader;
-    private Body[] _Data = null;
-    
-    public Body[] GetData()
-    {
-        return _Data;
-    }
-    
+    private KinectSensor _kinectSensor;
+    private BodyFrameReader _reader;
+    public Body[] BodyData { get; private set; }
 
     void Start () 
     {
-        _Sensor = KinectSensor.GetDefault();
+        _kinectSensor = KinectSensor.GetDefault();
 
-        if (_Sensor != null)
-        {
-            _Reader = _Sensor.BodyFrameSource.OpenReader();
+        if (_kinectSensor == null) return;
+
+        _reader = _kinectSensor.BodyFrameSource.OpenReader();
             
-            if (!_Sensor.IsOpen)
-            {
-                _Sensor.Open();
-            }
-        }   
+        if (!_kinectSensor.IsOpen)
+        {
+            _kinectSensor.Open();
+        }
     }
     
     void Update () 
     {
-        if (_Reader != null)
-        {
-            var frame = _Reader.AcquireLatestFrame();
-            if (frame != null)
-            {
-                if (_Data == null)
-                {
-                    _Data = new Body[_Sensor.BodyFrameSource.BodyCount];
-                }
-                
-                frame.GetAndRefreshBodyData(_Data);
-                
-                frame.Dispose();
-                frame = null;
-            }
-        }    
+        if (_reader == null) return;
+        BodyData = GetUpdatedBodyData();
     }
     
     void OnApplicationQuit()
     {
-        if (_Reader != null)
+        if (_reader != null)
         {
-            _Reader.Dispose();
-            _Reader = null;
+            _reader.Dispose();
+            _reader = null;
         }
-        
-        if (_Sensor != null)
+
+        if (_kinectSensor == null) return;
+
+        if (_kinectSensor.IsOpen)
         {
-            if (_Sensor.IsOpen)
-            {
-                _Sensor.Close();
-            }
+            _kinectSensor.Close();
+        }
             
-            _Sensor = null;
+        _kinectSensor = null;
+    }
+
+    private Body[] GetUpdatedBodyData()
+    {
+        using (var frame = _reader.AcquireLatestFrame())
+        {
+            if (frame == null) return null;
+
+            var bodyData = new Body[_kinectSensor.BodyFrameSource.BodyCount];
+
+            frame.GetAndRefreshBodyData(bodyData);
+            return bodyData;
         }
     }
 }

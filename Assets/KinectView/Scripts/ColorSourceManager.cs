@@ -1,62 +1,47 @@
 ﻿using UnityEngine;
-using System.Collections;
 using Windows.Kinect;
+using Assets.KinectView.Util;
 
-public class ColorSourceManager : MonoBehaviour 
+public class ColorSourceManager : MonoBehaviour
 {
-    public int ColorWidth { get; private set; }
-    public int ColorHeight { get; private set; }
+    public Texture2D ColorFrameTexture { get; private set; }
 
-    private KinectSensor _sensor;
-    private ColorFrameReader _reader;
-    private Texture2D _texture;
-    private byte[] _data;
-    
-    public Texture2D GetColorTexture()
-    {
-        return _texture;
-    }
-    
+    private Kinect _kinect;
+    private uint _frameDataSize;
+
+
     void Start()
     {
-        _sensor = KinectSensor.GetDefault();
-
-        if (_sensor == null) return;
-
-        _reader = _sensor.ColorFrameSource.OpenReader();
-            
-        var frameDesc = _sensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Rgba);
-        ColorWidth = frameDesc.Width;
-        ColorHeight = frameDesc.Height;
-            
-        _texture = new Texture2D(frameDesc.Width, frameDesc.Height, TextureFormat.RGBA32, false);
-        _data = new byte[frameDesc.BytesPerPixel * frameDesc.LengthInPixels];
-            
-        if (!_sensor.IsOpen)
-        {
-            _sensor.Open();
-        }
+        _kinect = new Kinect(FrameSourceTypes.Color);
+        var frameDesc = _kinect.Sensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Rgba);
+        ColorFrameTexture = new Texture2D(frameDesc.Width, frameDesc.Height, TextureFormat.RGBA32, false);
+        _frameDataSize = frameDesc.BytesPerPixel*frameDesc.LengthInPixels;
     }
-    
-    void Update ()
+
+    void Update()
     {
-        if (_reader == null) return;
-        using (var frame = _reader.AcquireLatestFrame())
-        {
-            if (frame == null) return;
-            frame.CopyConvertedFrameDataToArray(_data, ColorImageFormat.Rgba);
-            _texture.LoadRawTextureData(_data);
-            _texture.Apply();
-        }
+        if (_kinect.Reader == null) return;
+        LoadFrameIntoTexture(_kinect.Reader, ColorFrameTexture);
     }
 
     void OnApplicationQuit()
     {
-        if (_reader != null) _reader.Dispose();
+        _kinect.Dispose();
+    }
 
-        if (_sensor != null && _sensor.IsOpen) _sensor.Close();
-            
-        _sensor = null;
-        _reader = null;
+    private void LoadFrameIntoTexture(MultiSourceFrameReader reader, Texture2D texture)
+    {
+
+        var multiSourceFrame = reader.AcquireLatestFrame();
+        if (multiSourceFrame == null) return;
+
+        using (var colorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame())
+        {
+            if (colorFrame == null) return;
+            var frameData = new byte[_frameDataSize];
+            colorFrame.CopyConvertedFrameDataToArray(frameData, ColorImageFormat.Rgba);
+            texture.LoadRawTextureData(frameData);
+            texture.Apply();
+        }
     }
 }

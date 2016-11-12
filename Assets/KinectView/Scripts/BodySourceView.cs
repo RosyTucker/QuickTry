@@ -56,14 +56,14 @@ public class BodySourceView : MonoBehaviour
             return;
         }
         
-        Kinect.Body[] data = _BodyManager.GetData();
-        if (data == null)
+        var bodyData = _BodyManager.BodyData;
+        if (bodyData == null)
         {
             return;
         }
         
-        List<ulong> trackedIds = new List<ulong>();
-        foreach(var body in data)
+        var trackedIds = new List<ulong>();
+        foreach(var body in bodyData)
         {
             if (body == null)
             {
@@ -76,10 +76,10 @@ public class BodySourceView : MonoBehaviour
             }
         }
         
-        List<ulong> knownIds = new List<ulong>(_Bodies.Keys);
+        var knownIds = new List<ulong>(_Bodies.Keys);
         
         // First delete untracked bodies
-        foreach(ulong trackingId in knownIds)
+        foreach(var trackingId in knownIds)
         {
             if(!trackedIds.Contains(trackingId))
             {
@@ -88,7 +88,7 @@ public class BodySourceView : MonoBehaviour
             }
         }
 
-        foreach(var body in data)
+        foreach(var body in bodyData)
         {
             if (body == null)
             {
@@ -109,13 +109,13 @@ public class BodySourceView : MonoBehaviour
     
     private GameObject CreateBodyObject(ulong id)
     {
-        GameObject body = new GameObject("Body:" + id);
+        var body = new GameObject("Body:" + id);
         
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
         {
-            GameObject jointObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var jointObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
             
-            LineRenderer lr = jointObj.AddComponent<LineRenderer>();
+            var lr = jointObj.AddComponent<LineRenderer>();
             lr.SetVertexCount(2);
             lr.material = BoneMaterial;
             lr.SetWidth(0.05f, 0.05f);
@@ -130,9 +130,9 @@ public class BodySourceView : MonoBehaviour
     
     private void RefreshBodyObject(Kinect.Body body, GameObject bodyObject)
     {
-        for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
+        for (var jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
         {
-            Kinect.Joint sourceJoint = body.Joints[jt];
+            var sourceJoint = body.Joints[jt];
             Kinect.Joint? targetJoint = null;
             
             if(_BoneMap.ContainsKey(jt))
@@ -140,10 +140,10 @@ public class BodySourceView : MonoBehaviour
                 targetJoint = body.Joints[_BoneMap[jt]];
             }
             
-            Transform jointObj = bodyObject.transform.FindChild(jt.ToString());
+            var jointObj = bodyObject.transform.FindChild(jt.ToString());
             jointObj.localPosition = GetVector3FromJoint(sourceJoint);
             
-            LineRenderer lr = jointObj.GetComponent<LineRenderer>();
+            var lr = jointObj.GetComponent<LineRenderer>();
             if(targetJoint.HasValue)
             {
                 lr.SetPosition(0, jointObj.localPosition);

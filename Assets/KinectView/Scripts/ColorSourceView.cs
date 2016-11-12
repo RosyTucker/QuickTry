@@ -20,6 +20,6 @@ public class ColorSourceView : MonoBehaviour
 
         if (_colorManager == null) return;
         
-        gameObject.GetComponent<Renderer>().material.mainTexture = _colorManager.GetColorTexture();
+        gameObject.GetComponent<Renderer>().material.mainTexture = _colorManager.ColorFrameTexture;
     }
 }
