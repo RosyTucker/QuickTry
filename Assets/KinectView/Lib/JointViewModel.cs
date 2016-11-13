@@ -1,7 +1,7 @@
 ﻿using Windows.Kinect;
 using UnityEngine;
 
-namespace Assets.KinectView.Util
+namespace Assets.KinectView.Lib
 {
     public class JointViewModel
     {

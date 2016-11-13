@@ -1,20 +1,21 @@
 ﻿using UnityEngine;
-using System.Collections;
-using Windows.Kinect;
 
-public class ColorSourceView : MonoBehaviour
+namespace Assets.KinectView.Scripts
 {
-    public GameObject ColorSourceManager;
-    private ColorSourceManager _colorManager;
-    
-    void Update()
+    public class ColorSourceView : MonoBehaviour
     {
-        if (ColorSourceManager == null) return;
+        public GameObject ColorSourceManager;
+        private ColorSourceManager _colorManager;
+    
+        void Update()
+        {
+            if (ColorSourceManager == null) return;
         
-        _colorManager = ColorSourceManager.GetComponent<ColorSourceManager>();
+            _colorManager = ColorSourceManager.GetComponent<ColorSourceManager>();
 
-        if (_colorManager == null) return;
+            if (_colorManager == null) return;
         
-        gameObject.GetComponent<Renderer>().material.mainTexture = _colorManager.ColorFrameTexture;
+            gameObject.GetComponent<Renderer>().material.mainTexture = _colorManager.ColorFrameTexture;
+        }
     }
 }

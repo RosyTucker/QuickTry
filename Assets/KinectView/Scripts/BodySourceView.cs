@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.KinectView.Util;
+using Assets.KinectView.Lib;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;
 using Kinect = Windows.Kinect;
@@ -22,7 +22,6 @@ namespace Assets.KinectView.Scripts
             if (updatedBodyData == null) return;
 
             var freshTrackedBodyData = updatedBodyData.Where(body => body.IsTracked).ToArray();
-
             var knownBodyIds = new List<ulong>(_bodyGameObjects.Keys);
             var freshBodyIds = freshTrackedBodyData.Select(trackedBody => trackedBody.TrackingId).ToList();
             RemoveDeadBodies(knownBodyIds, freshBodyIds);
@@ -78,7 +77,7 @@ namespace Assets.KinectView.Scripts
                 var targetJoint = _boneMap.ContainsKey(jointType) ? body.Joints[_boneMap[jointType]] : null;
 
                 var jointObj = bodyObject.transform.FindChild(jointType.ToString());
-                jointObj.localPosition = GetVector3FromJoint(sourceJoint);
+                jointObj.localPosition = transform.LocalPositionFromColorSourcePosition(sourceJoint.Position);
 
                 if (targetJoint != null)
                 {
@@ -87,19 +86,11 @@ namespace Assets.KinectView.Scripts
             }
         }
 
-        private Vector3 GetVector3FromJoint(JointViewModel joint)
-        {
-            var bounds = gameObject.GetComponent<Collider>().bounds;
-            var xCoord = MapToUiCoordinates(joint.Position.x, 0, 1920, bounds.min.x, bounds.max.x);
-            var yCoord = MapToUiCoordinates(joint.Position.y, 0, 1080, bounds.min.y, bounds.max.y);
-            return new Vector3(-xCoord, -yCoord, 0);
-        }
-
         private void DrawBone(Transform jointObj, JointViewModel sourceJoint, JointViewModel targetJoint)
         {
             var lineRenderer = jointObj.GetComponent<LineRenderer>();
             lineRenderer.SetPosition(0, jointObj.localPosition);
-            lineRenderer.SetPosition(1, GetVector3FromJoint(targetJoint));
+            lineRenderer.SetPosition(1, transform.LocalPositionFromColorSourcePosition(targetJoint.Position));
             lineRenderer.SetColors(GetColorForState(sourceJoint.TrackingState), GetColorForState(targetJoint.TrackingState));
         }
 
@@ -112,17 +103,6 @@ namespace Assets.KinectView.Scripts
             Debug.Assert(bodySourceManagerScript != null, "BodySourceManager does not have the required script");
 
             return bodySourceManagerScript.BodyViewModels;
-        }
-
-        private static float MapToUiCoordinates(float numberToMap, float minInput, float maxInput, float minOutput, float maxOutput)
-        {
-            var output = (numberToMap - minInput)*(maxOutput - minOutput)/(maxInput - minInput) + minOutput;
-            return LimitInclusive(output, minOutput, maxOutput);
-        }
-
-        public static float LimitInclusive(float value, float min, float max)
-        {
-            return Math.Min(max, Math.Max(value, min));
         }
 
         private static Color GetColorForState(Kinect.TrackingState state)
@@ -167,5 +147,6 @@ namespace Assets.KinectView.Scripts
             {Kinect.JointType.SpineShoulder, Kinect.JointType.Neck},
             {Kinect.JointType.Neck, Kinect.JointType.Head},
         };
+
     }
 }

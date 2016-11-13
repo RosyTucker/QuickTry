@@ -1,47 +1,50 @@
-﻿using UnityEngine;
-using Windows.Kinect;
-using Assets.KinectView.Util;
+﻿using Windows.Kinect;
+using Assets.KinectView.Lib;
+using UnityEngine;
 
-public class ColorSourceManager : MonoBehaviour
+namespace Assets.KinectView.Scripts
 {
-    public Texture2D ColorFrameTexture { get; private set; }
-
-    private Kinect _kinect;
-    private uint _frameDataSize;
-
-
-    void Start()
+    public class ColorSourceManager : MonoBehaviour
     {
-        _kinect = new Kinect(FrameSourceTypes.Color);
-        var frameDesc = _kinect.Sensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Rgba);
-        ColorFrameTexture = new Texture2D(frameDesc.Width, frameDesc.Height, TextureFormat.RGBA32, false);
-        _frameDataSize = frameDesc.BytesPerPixel*frameDesc.LengthInPixels;
-    }
+        public Texture2D ColorFrameTexture { get; private set; }
 
-    void Update()
-    {
-        if (_kinect.Reader == null) return;
-        LoadFrameIntoTexture(_kinect.Reader, ColorFrameTexture);
-    }
+        private Kinect _kinect;
+        private uint _frameDataSize;
 
-    void OnApplicationQuit()
-    {
-        _kinect.Dispose();
-    }
 
-    private void LoadFrameIntoTexture(MultiSourceFrameReader reader, Texture2D texture)
-    {
-
-        var multiSourceFrame = reader.AcquireLatestFrame();
-        if (multiSourceFrame == null) return;
-
-        using (var colorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame())
+        void Start()
         {
-            if (colorFrame == null) return;
-            var frameData = new byte[_frameDataSize];
-            colorFrame.CopyConvertedFrameDataToArray(frameData, ColorImageFormat.Rgba);
-            texture.LoadRawTextureData(frameData);
-            texture.Apply();
+            _kinect = new Kinect();
+            var frameDescription = _kinect.Sensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Rgba);
+            ColorFrameTexture = new Texture2D(frameDescription.Width, frameDescription.Height, TextureFormat.RGBA32, false);
+            _frameDataSize = frameDescription.BytesPerPixel*frameDescription.LengthInPixels;
+        }
+
+        void Update()
+        {
+            if (_kinect.Reader == null) return;
+            LoadFrameIntoTexture(_kinect.Reader, ColorFrameTexture);
+        }
+
+        void OnApplicationQuit()
+        {
+            _kinect.Dispose();
+        }
+
+        private void LoadFrameIntoTexture(MultiSourceFrameReader reader, Texture2D texture)
+        {
+
+            var multiSourceFrame = reader.AcquireLatestFrame();
+            if (multiSourceFrame == null) return;
+
+            using (var colorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame())
+            {
+                if (colorFrame == null) return;
+                var frameData = new byte[_frameDataSize];
+                colorFrame.CopyConvertedFrameDataToArray(frameData, ColorImageFormat.Rgba);
+                texture.LoadRawTextureData(frameData);
+                texture.Apply();
+            }
         }
     }
 }

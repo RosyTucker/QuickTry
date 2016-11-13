@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Windows.Kinect;
-using Assets.KinectView.Util;
+using Assets.KinectView.Lib;
 
 namespace Assets.KinectView.Scripts
 {
