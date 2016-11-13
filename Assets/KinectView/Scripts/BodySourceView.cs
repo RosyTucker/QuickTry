@@ -60,7 +60,7 @@ namespace Assets.KinectView.Scripts
                 var lr = jointObj.AddComponent<LineRenderer>();
                 lr.SetVertexCount(2);
                 lr.material = BoneMaterial;
-                lr.SetWidth(0.05f, 0.05f);
+                lr.SetWidth(0.3f, 0.3f);
 
                 jointObj.name = joint.ToString();
                 jointObj.transform.parent = body.transform;
