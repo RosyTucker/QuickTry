@@ -9,7 +9,7 @@ using Assets.KinectView.Util;
 public class BodySourceManager : MonoBehaviour
 {
     private Kinect _kinect;
-    public IEnumerable<BodyViewModel> BodyViewModels { get; private set; }
+    public BodyViewModel[] BodyViewModels { get; private set; }
 
     void Start()
     {
@@ -21,7 +21,7 @@ public class BodySourceManager : MonoBehaviour
         var updatedBodyData = GetUpdatedBodyData();
         if (updatedBodyData == null) return;
         BodyViewModels =  updatedBodyData
-            .Select(body => new BodyViewModel(body.IsTracked, body.TrackingId, GetJoints(body)));
+            .Select(body => new BodyViewModel(body.IsTracked, body.TrackingId, GetJoints(body))).ToArray();
     }
 
     void OnApplicationQuit()

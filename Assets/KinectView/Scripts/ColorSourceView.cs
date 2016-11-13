@@ -7,11 +7,6 @@ public class ColorSourceView : MonoBehaviour
     public GameObject ColorSourceManager;
     private ColorSourceManager _colorManager;
     
-    void Start ()
-    {
-//        gameObject.GetComponent<Renderer>().material.SetTextureScale("_MainTex", new Vector2(-1, 1));
-    }
-    
     void Update()
     {
         if (ColorSourceManager == null) return;
