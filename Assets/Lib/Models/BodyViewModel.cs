@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Windows.Kinect;
-using Assets.KinectView.Lib;
 
-namespace Assets.KinectView.Scripts
+namespace Assets.Lib
 {
     public class BodyViewModel
     {

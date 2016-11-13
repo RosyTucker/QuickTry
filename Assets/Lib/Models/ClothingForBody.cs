@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.KinectView.Scripts
+namespace Assets.Scripts
 {
     public class ClothingForBody
     {

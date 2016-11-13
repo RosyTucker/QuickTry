@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Windows.Kinect;
-using Assets.KinectView.Lib;
+using Assets.Lib;
 using UnityEngine;
 
-namespace Assets.KinectView.Scripts
+namespace Assets.Scripts
 {
     public class ClothingView : MonoBehaviour
     {

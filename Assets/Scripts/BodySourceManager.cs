@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Windows.Kinect;
-using Assets.KinectView.Lib;
+using Assets.Lib;
 using UnityEngine;
 
-namespace Assets.KinectView.Scripts
+namespace Assets.Scripts
 {
     public class BodySourceManager : MonoBehaviour
     {
@@ -27,6 +27,7 @@ namespace Assets.KinectView.Scripts
         void OnApplicationQuit()
         {
             _kinect.Dispose();
+            _kinect = null;
         }
 
         private Body[] GetUpdatedBodyData()

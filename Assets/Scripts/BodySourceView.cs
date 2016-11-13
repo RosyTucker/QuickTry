@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.KinectView.Lib;
+using Assets.Lib;
 using UnityEngine;
-using Debug = System.Diagnostics.Debug;
 using Kinect = Windows.Kinect;
 
-namespace Assets.KinectView.Scripts
+namespace Assets.Scripts
 {
     public class BodySourceView : MonoBehaviour
     {
@@ -17,6 +16,7 @@ namespace Assets.KinectView.Scripts
 
         void Update()
         {
+            Debug.Log(1/Time.smoothDeltaTime);
             var updatedBodyData = GameObjectUtils.GetUpdatedBodyData(BodySourceManager);
 
             if (updatedBodyData == null) return;
@@ -91,7 +91,8 @@ namespace Assets.KinectView.Scripts
             var lineRenderer = jointObj.GetComponent<LineRenderer>();
             lineRenderer.SetPosition(0, jointObj.localPosition);
             lineRenderer.SetPosition(1, transform.LocalPositionFromColorSourcePosition(targetJoint.Position));
-            lineRenderer.SetColors(GetColorForState(sourceJoint.TrackingState), GetColorForState(targetJoint.TrackingState));
+            lineRenderer.SetColors(GetColorForState(sourceJoint.TrackingState),
+                GetColorForState(targetJoint.TrackingState));
         }
 
         private static Color GetColorForState(Kinect.TrackingState state)
@@ -109,33 +110,33 @@ namespace Assets.KinectView.Scripts
             }
         }
 
-        private readonly Dictionary<Kinect.JointType, Kinect.JointType> _boneMap = new Dictionary<Kinect.JointType, Kinect.JointType>
-        {
-            {Kinect.JointType.FootLeft, Kinect.JointType.AnkleLeft},
-            {Kinect.JointType.AnkleLeft, Kinect.JointType.KneeLeft},
-            {Kinect.JointType.KneeLeft, Kinect.JointType.HipLeft},
-            {Kinect.JointType.HipLeft, Kinect.JointType.SpineBase},
-            {Kinect.JointType.FootRight, Kinect.JointType.AnkleRight},
-            {Kinect.JointType.AnkleRight, Kinect.JointType.KneeRight},
-            {Kinect.JointType.KneeRight, Kinect.JointType.HipRight},
-            {Kinect.JointType.HipRight, Kinect.JointType.SpineBase},
-            {Kinect.JointType.HandTipLeft, Kinect.JointType.HandLeft},
-            {Kinect.JointType.ThumbLeft, Kinect.JointType.HandLeft},
-            {Kinect.JointType.HandLeft, Kinect.JointType.WristLeft},
-            {Kinect.JointType.WristLeft, Kinect.JointType.ElbowLeft},
-            {Kinect.JointType.ElbowLeft, Kinect.JointType.ShoulderLeft},
-            {Kinect.JointType.ShoulderLeft, Kinect.JointType.SpineShoulder},
-            {Kinect.JointType.HandTipRight, Kinect.JointType.HandRight},
-            {Kinect.JointType.ThumbRight, Kinect.JointType.HandRight},
-            {Kinect.JointType.HandRight, Kinect.JointType.WristRight},
-            {Kinect.JointType.WristRight, Kinect.JointType.ElbowRight},
-            {Kinect.JointType.ElbowRight, Kinect.JointType.ShoulderRight},
-            {Kinect.JointType.ShoulderRight, Kinect.JointType.SpineShoulder},
-            {Kinect.JointType.SpineBase, Kinect.JointType.SpineMid},
-            {Kinect.JointType.SpineMid, Kinect.JointType.SpineShoulder},
-            {Kinect.JointType.SpineShoulder, Kinect.JointType.Neck},
-            {Kinect.JointType.Neck, Kinect.JointType.Head},
-        };
-
+        private readonly Dictionary<Kinect.JointType, Kinect.JointType> _boneMap = new Dictionary
+            <Kinect.JointType, Kinect.JointType>
+            {
+                {Kinect.JointType.FootLeft, Kinect.JointType.AnkleLeft},
+                {Kinect.JointType.AnkleLeft, Kinect.JointType.KneeLeft},
+                {Kinect.JointType.KneeLeft, Kinect.JointType.HipLeft},
+                {Kinect.JointType.HipLeft, Kinect.JointType.SpineBase},
+                {Kinect.JointType.FootRight, Kinect.JointType.AnkleRight},
+                {Kinect.JointType.AnkleRight, Kinect.JointType.KneeRight},
+                {Kinect.JointType.KneeRight, Kinect.JointType.HipRight},
+                {Kinect.JointType.HipRight, Kinect.JointType.SpineBase},
+                {Kinect.JointType.HandTipLeft, Kinect.JointType.HandLeft},
+                {Kinect.JointType.ThumbLeft, Kinect.JointType.HandLeft},
+                {Kinect.JointType.HandLeft, Kinect.JointType.WristLeft},
+                {Kinect.JointType.WristLeft, Kinect.JointType.ElbowLeft},
+                {Kinect.JointType.ElbowLeft, Kinect.JointType.ShoulderLeft},
+                {Kinect.JointType.ShoulderLeft, Kinect.JointType.SpineShoulder},
+                {Kinect.JointType.HandTipRight, Kinect.JointType.HandRight},
+                {Kinect.JointType.ThumbRight, Kinect.JointType.HandRight},
+                {Kinect.JointType.HandRight, Kinect.JointType.WristRight},
+                {Kinect.JointType.WristRight, Kinect.JointType.ElbowRight},
+                {Kinect.JointType.ElbowRight, Kinect.JointType.ShoulderRight},
+                {Kinect.JointType.ShoulderRight, Kinect.JointType.SpineShoulder},
+                {Kinect.JointType.SpineBase, Kinect.JointType.SpineMid},
+                {Kinect.JointType.SpineMid, Kinect.JointType.SpineShoulder},
+                {Kinect.JointType.SpineShoulder, Kinect.JointType.Neck},
+                {Kinect.JointType.Neck, Kinect.JointType.Head},
+            };
     }
 }

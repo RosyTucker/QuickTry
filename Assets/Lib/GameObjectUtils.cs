@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Assets.KinectView.Scripts;
+using Assets.Scripts;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;
 
-namespace Assets.KinectView.Lib
+namespace Assets.Lib
 {
     class GameObjectUtils
     {

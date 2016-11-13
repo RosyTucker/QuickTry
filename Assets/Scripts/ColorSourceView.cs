@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.KinectView.Scripts
+namespace Assets.Scripts
 {
     public class ColorSourceView : MonoBehaviour
     {

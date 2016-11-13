@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.Kinect;
 
-namespace Assets.KinectView.Lib
+namespace Assets.Lib
 {
     public class Kinect : IDisposable
     {

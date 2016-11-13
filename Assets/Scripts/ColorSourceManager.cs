@@ -1,8 +1,8 @@
 ﻿using Windows.Kinect;
-using Assets.KinectView.Lib;
+using Assets.Lib;
 using UnityEngine;
 
-namespace Assets.KinectView.Scripts
+namespace Assets.Scripts
 {
     public class ColorSourceManager : MonoBehaviour
     {
@@ -29,6 +29,7 @@ namespace Assets.KinectView.Scripts
         void OnApplicationQuit()
         {
             _kinect.Dispose();
+            _kinect = null;
         }
 
         private void LoadFrameIntoTexture(MultiSourceFrameReader reader, Texture2D texture)

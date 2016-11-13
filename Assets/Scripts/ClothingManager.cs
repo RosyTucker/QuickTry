@@ -1,22 +1,21 @@
 ﻿using System.Collections.Generic;
-using Assets.KinectView.Lib;
+using Assets.Lib;
+using Assets.Lib.Parser;
 using UnityEngine;
 
-namespace Assets.KinectView.Scripts
+namespace Assets.Scripts
 {
     public class ClothingManager : MonoBehaviour
     {
-
+        public string ClothingFilePath = "Clothing";
         public Dictionary<string, ClothingItem> AssignedClothing { get; private set; }
+        public Dictionary<string, ClothingItem> AllClothing { get; private set; }
 
         void Start()
         {
-            AssignedClothing = new Dictionary<string, ClothingItem>
-            {
-                {"1", new ClothingItem(ClothingType.Shirt, "Green Shirt")},
-                {"2", new ClothingItem(ClothingType.Trousers, "Blue Trousers")}
-            };
-        }
+            AllClothing = ClothingParser.Parse(ClothingFilePath);
+            AssignedClothing = AllClothing;
+        }      
 
         void Update()
         {
