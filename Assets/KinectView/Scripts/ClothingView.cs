@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using Windows.Kinect;
 using Assets.KinectView.Lib;
 using UnityEngine;
-using Debug = System.Diagnostics.Debug;
 
 namespace Assets.KinectView.Scripts
 {
@@ -32,10 +29,10 @@ namespace Assets.KinectView.Scripts
 
         void Update()
         {
-            var bodyData = GetUpdatedBodyData(BodySourceManager);
+            var bodyData = GameObjectUtils.GetUpdatedBodyData(BodySourceManager);
             if (bodyData == null) return;
 
-            var assignedClothing = GetAssignedClothing(ClothingManager);
+            var assignedClothing = GameObjectUtils.GetAssignedClothing(ClothingManager);
             var trackedBodyData = bodyData.Where(body => body.IsTracked).ToArray();
 
             var knownBodyIds = new List<ulong>(_clothing.Keys);
@@ -67,14 +64,14 @@ namespace Assets.KinectView.Scripts
             {
                 if (!clothingWrapper.Clothes.ContainsKey(clothingItem.Id))
                 {
-                    var clothingObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    var clothingObject = GameObject.CreatePrimitive(PrimitiveType.Capsule);
                     clothingObject.transform.parent = clothingWrapper.WrapperObject.transform;
-                    clothingObject.transform.localScale = new Vector3(20, 20, 20);
+                    clothingObject.transform.localScale = new Vector3(12, 15, 12);
                     clothingObject.name = clothingItem.Id;
                     clothingWrapper.Clothes.Add(clothingItem.Id, clothingObject);
                 }
                 clothingWrapper.Clothes[clothingItem.Id].transform.localPosition =
-                    transform.LocalPositionFromColorSourcePosition(body.Joints[JointType.SpineMid].Position);
+                    transform.LocalPositionFromColorSourcePosition(body.Joints[JointType.SpineBase].Position);
             }
         }
 
@@ -91,28 +88,6 @@ namespace Assets.KinectView.Scripts
 
                 clothingWrapper.Clothes.Remove(knownClothingId);
             }
-        }
-
-        private static BodyViewModel[] GetUpdatedBodyData(GameObject bodySourceManager)
-        {
-            Debug.Assert(bodySourceManager != null, "BodySourceManager is null");
-
-            var bodySourceManagerScript = bodySourceManager.GetComponent<BodySourceManager>();
-
-            Debug.Assert(bodySourceManagerScript != null, "BodySourceManager does not have the required script");
-
-            return bodySourceManagerScript.BodyViewModels;
-        }
-
-        private static Dictionary<string, ClothingItem> GetAssignedClothing(GameObject clothingManager)
-        {
-            Debug.Assert(clothingManager != null, "ClothingManager is null");
-
-            var clothingManagerScript = clothingManager.GetComponent<ClothingManager>();
-
-            Debug.Assert(clothingManagerScript != null, "ClothingManager does not have the required script");
-
-            return clothingManagerScript.AssignedClothing;
         }
 
         private void RemoveDeadBodies(List<ulong> knownBodyIds, List<ulong> freshBodyIds)

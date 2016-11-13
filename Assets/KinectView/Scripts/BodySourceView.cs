@@ -17,7 +17,7 @@ namespace Assets.KinectView.Scripts
 
         void Update()
         {
-            var updatedBodyData = GetUpdatedBodyData(BodySourceManager);
+            var updatedBodyData = GameObjectUtils.GetUpdatedBodyData(BodySourceManager);
 
             if (updatedBodyData == null) return;
 
@@ -92,17 +92,6 @@ namespace Assets.KinectView.Scripts
             lineRenderer.SetPosition(0, jointObj.localPosition);
             lineRenderer.SetPosition(1, transform.LocalPositionFromColorSourcePosition(targetJoint.Position));
             lineRenderer.SetColors(GetColorForState(sourceJoint.TrackingState), GetColorForState(targetJoint.TrackingState));
-        }
-
-        private static BodyViewModel[] GetUpdatedBodyData(GameObject bodySourceManager)
-        {
-            Debug.Assert(bodySourceManager != null, "BodySourceManager is null");
-
-            var bodySourceManagerScript = bodySourceManager.GetComponent<BodySourceManager>();
-
-            Debug.Assert(bodySourceManagerScript != null, "BodySourceManager does not have the required script");
-
-            return bodySourceManagerScript.BodyViewModels;
         }
 
         private static Color GetColorForState(Kinect.TrackingState state)
