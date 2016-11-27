@@ -10,7 +10,7 @@ namespace Assets.Lib
             var bounds = transform.GetComponent<Collider>().bounds;
             var xCoord = MapToUiCoordinates(colorSourcePosition.x, 0, 1920, bounds.min.x, bounds.max.x);
             var yCoord = MapToUiCoordinates(colorSourcePosition.y, 0, 1080, bounds.min.y, bounds.max.y);
-            return new Vector3(-xCoord, -yCoord, -1);
+            return new Vector3(-xCoord, -yCoord, transform.localPosition.z);
         }
 
         private static float MapToUiCoordinates(float numberToMap, float minInput, float maxInput, float minOutput,

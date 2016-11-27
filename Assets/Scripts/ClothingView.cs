@@ -2,6 +2,7 @@
 using System.Linq;
 using Windows.Kinect;
 using Assets.Lib;
+using Assets.Lib.Models;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -10,7 +11,7 @@ namespace Assets.Scripts
     {
         public GameObject ClothingManager;
         public GameObject BodySourceManager;
-
+        
         private readonly Dictionary<ulong, ClothingForBody> _clothingForBodies = new Dictionary<ulong, ClothingForBody>();
 
         void Update()
@@ -50,18 +51,36 @@ namespace Assets.Scripts
             {
                 if (!clothingForBody.Clothes.ContainsKey(clothingItem.Id))
                 {
-                    var clothingObject = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+                    var clothingObject = CreateClothingGameObject(clothingItem, body);
                     clothingObject.transform.parent = clothingForBody.BodyObject.transform;
-                    clothingObject.transform.localScale = new Vector3(12, 15, 12);
-                    clothingObject.name = clothingItem.Id;
                     clothingForBody.Clothes.Add(clothingItem.Id, clothingObject);
                 }
-                clothingForBody.Clothes[clothingItem.Id].transform.localPosition =
-                    transform.LocalPositionFromColorSourcePosition(body.Joints[JointType.SpineBase].Position);
+               clothingForBody.Clothes[clothingItem.Id].transform.localPosition = GetClothingItemPosition(transform, clothingItem, body);
             }
         }
 
-        private void RemoveDeadClothes(List<string> newClothingIds, ClothingForBody clothingForBody)
+        private static Vector3 GetClothingItemPosition(Transform transform, ClothingItem clothingItem, BodyViewModel body)
+        {
+            return transform.LocalPositionFromColorSourcePosition(body.Joints[JointType.SpineMid].Position);
+        }
+
+        private static GameObject CreateClothingGameObject(ClothingItem clothingItem, BodyViewModel body)
+        {
+            var clothingObject = new GameObject(clothingItem.Id + body.TrackingId);
+            var skinnedMeshRenderer = clothingObject.AddComponent<SkinnedMeshRenderer>();
+            var animator = clothingObject.AddComponent<Animator>();
+            animator.avatar = Resources.Load<Avatar>(clothingItem.Mesh);
+            var mesh = Resources.Load<Mesh>(clothingItem.Mesh);
+            skinnedMeshRenderer.sharedMesh = mesh;
+            var texture = (Texture2D)Resources.Load(clothingItem.Texture, typeof(Texture2D));
+            skinnedMeshRenderer.material = (Material)Resources.Load(clothingItem.Material, typeof(Material));
+            skinnedMeshRenderer.material.mainTexture = texture;
+            clothingObject.transform.Rotate(-90, 0, 0);
+            clothingObject.name = clothingItem.Id;
+            return clothingObject;
+        }
+
+        private static void RemoveDeadClothes(ICollection<string> newClothingIds, ClothingForBody clothingForBody)
         {
             var existingClothingIds = new List<string>(clothingForBody.Clothes.Keys);
             foreach (var knownClothingId in existingClothingIds)
@@ -76,7 +95,7 @@ namespace Assets.Scripts
             }
         }
 
-        private void RemoveDeadBodies(List<ulong> knownBodyIds, List<ulong> freshBodyIds)
+        private void RemoveDeadBodies(IEnumerable<ulong> knownBodyIds, ICollection<ulong> freshBodyIds)
         {
             foreach (var knownBodyId in knownBodyIds)
             {

@@ -4,7 +4,9 @@
   <Item>
     <Id>Shirt1</Id>
     <Type>Shirt</Type>
-    <Texture>./Textures/Shirt1.fbx</Texture>
+    <Mesh>Meshes/shirt</Mesh>
+    <Texture>Textures/M-TShirt</Texture>
+    <Material>Meshes/Materials/ShirtSquare</Material>
     <AttachmentPoints>
       <Point>
         <Type>SpineShoulder</Type>

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Lib;
+using Assets.Lib.Models;
 using Assets.Lib.Parser;
 using UnityEngine;
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Assets.Lib.Models;
 using Assets.Scripts;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;

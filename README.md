@@ -1,0 +1,4 @@
+# Requirements
+
+- Kinect SDK
+- OpenNi

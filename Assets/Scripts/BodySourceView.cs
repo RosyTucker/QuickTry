@@ -52,7 +52,6 @@ namespace Assets.Scripts
         {
             var body = new GameObject("Body:" + id);
             body.transform.parent = gameObject.transform;
-
             foreach (Kinect.JointType joint in Enum.GetValues(typeof(Kinect.JointType)))
             {
                 var jointObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -105,6 +104,7 @@ namespace Assets.Scripts
                 case Kinect.TrackingState.Inferred:
                     return Color.red;
 
+                case Kinect.TrackingState.NotTracked:
                 default:
                     return Color.black;
             }

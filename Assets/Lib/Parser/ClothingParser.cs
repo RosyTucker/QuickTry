@@ -4,6 +4,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Schema;
 using Windows.Kinect;
+using Assets.Lib.Models;
 using UnityEngine;
 
 namespace Assets.Lib.Parser
@@ -35,6 +36,12 @@ namespace Assets.Lib.Parser
             var textureNode = childNodes.FirstOrDefault(node => node.Name == XmlTags.ItemTexture);
             if (textureNode == null) throw new XmlSchemaException("Item is Missing " + XmlTags.ItemTexture);
 
+            var materialNode = childNodes.FirstOrDefault(node => node.Name == XmlTags.ItemMaterial);
+            if (materialNode == null) throw new XmlSchemaException("Item is Missing " + XmlTags.ItemMaterial);
+
+            var meshNode = childNodes.FirstOrDefault(node => node.Name == XmlTags.ItemMesh);
+            if (meshNode == null) throw new XmlSchemaException("Item is Missing " + XmlTags.ItemMesh);
+
             var attachmentPointsNode = childNodes.FirstOrDefault(node => node.Name == XmlTags.ItemAttachmentPoints);
             if (attachmentPointsNode == null) throw new FormatException("Item is Missing " + XmlTags.ItemAttachmentPoints);
 
@@ -46,8 +53,10 @@ namespace Assets.Lib.Parser
             var id = idNode.InnerText;
             var type = typeNode.InnerText.ToEnum<ClothingType>();
             var texture = textureNode.InnerText;
+            var material = materialNode.InnerText;
+            var mesh = meshNode.InnerText;
 
-            return new ClothingItem(id, type, texture, attachmentPoints);
+            return new ClothingItem(id, type, texture, mesh, material, attachmentPoints);
         }
 
         private static ClothingAttachmentPoint ParseClothingAttachmentPoint(XmlNode attachmentNode)

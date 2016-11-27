@@ -1,7 +1,7 @@
 using Windows.Kinect;
 using UnityEngine;
 
-namespace Assets.Lib.Parser
+namespace Assets.Lib.Models
 {
     public class ClothingAttachmentPoint
     {
