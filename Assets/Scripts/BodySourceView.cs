@@ -16,7 +16,6 @@ namespace Assets.Scripts
 
         void Update()
         {
-            Debug.Log(1/Time.smoothDeltaTime);
             var updatedBodyData = GameObjectUtils.GetUpdatedBodyData(BodySourceManager);
 
             if (updatedBodyData == null) return;

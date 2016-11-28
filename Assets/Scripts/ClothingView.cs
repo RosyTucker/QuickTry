@@ -39,11 +39,14 @@ namespace Assets.Scripts
         private ClothingForBody CreateClothingBody(BodyViewModel body)
         {
             var bodyClothingObject = new GameObject("BodyClothing:" + body.TrackingId);
-            bodyClothingObject.transform.parent = gameObject.transform;
+            bodyClothingObject.AddComponent<BoxCollider>();
+            bodyClothingObject.transform.parent = gameObject.transform;            
+            bodyClothingObject.transform.localPosition = new Vector3(0, -0.5f, 0);
+            bodyClothingObject.transform.localScale = new Vector3(1, 1, 1);
             return new ClothingForBody(bodyClothingObject, body.TrackingId);
         }
 
-        private void UpdateClothesForBody(BodyViewModel body, ClothingForBody clothingForBody,
+        private static void UpdateClothesForBody(BodyViewModel body, ClothingForBody clothingForBody,
             Dictionary<string, ClothingItem> newClothes)
         {
             RemoveDeadClothes(new List<string>(newClothes.Keys), clothingForBody);
@@ -53,29 +56,17 @@ namespace Assets.Scripts
                 {
                     var clothingObject = CreateClothingGameObject(clothingItem, body);
                     clothingObject.transform.parent = clothingForBody.BodyObject.transform;
+                    clothingObject.transform.localPosition = new Vector3(0, 0, 0);
                     clothingForBody.Clothes.Add(clothingItem.Id, clothingObject);
                 }
-               clothingForBody.Clothes[clothingItem.Id].transform.localPosition = GetClothingItemPosition(transform, clothingItem, body);
+                MapClothingObjectPositionsFromBody(clothingForBody.BodyObject.transform, clothingForBody.Clothes[clothingItem.Id], body);
             }
-        }
-
-        private static Vector3 GetClothingItemPosition(Transform transform, ClothingItem clothingItem, BodyViewModel body)
-        {
-            return transform.LocalPositionFromColorSourcePosition(body.Joints[JointType.SpineMid].Position);
         }
 
         private static GameObject CreateClothingGameObject(ClothingItem clothingItem, BodyViewModel body)
         {
-            var clothingObject = new GameObject(clothingItem.Id + body.TrackingId);
-            var skinnedMeshRenderer = clothingObject.AddComponent<SkinnedMeshRenderer>();
-            var animator = clothingObject.AddComponent<Animator>();
-            animator.avatar = Resources.Load<Avatar>(clothingItem.Mesh);
-            var mesh = Resources.Load<Mesh>(clothingItem.Mesh);
-            skinnedMeshRenderer.sharedMesh = mesh;
-            var texture = (Texture2D)Resources.Load(clothingItem.Texture, typeof(Texture2D));
-            skinnedMeshRenderer.material = (Material)Resources.Load(clothingItem.Material, typeof(Material));
-            skinnedMeshRenderer.material.mainTexture = texture;
-            clothingObject.transform.Rotate(-90, 0, 0);
+            var clothingObject = Instantiate(Resources.Load<GameObject>(clothingItem.Mesh));
+            clothingObject.transform.localEulerAngles = new Vector3(0, 0, 0);
             clothingObject.name = clothingItem.Id;
             return clothingObject;
         }
@@ -111,6 +102,23 @@ namespace Assets.Scripts
 
                 _clothingForBodies.Remove(knownBodyId);
             }
+        }
+
+        private static void MapClothingObjectPositionsFromBody(Transform transform, GameObject clothingGameObject, BodyViewModel bodyViewModel)
+        {
+            var jointMapping = new Dictionary<JointType, string>
+            {
+                {JointType.ElbowRight, "rig/root/MCH-shoulder_rh_ns_ch.L/DEF-upper_arm.01.L" },
+                {JointType.ElbowLeft, "rig/root/MCH-shoulder_rh_ns_ch.R/DEF-upper_arm.01.R" },
+            };
+
+            var bone = clothingGameObject.transform.Find(jointMapping[JointType.ElbowLeft]);
+            var jointPosition = bodyViewModel.Joints[JointType.ElbowLeft].Position;
+            bone.transform.localPosition = transform.LocalPositionFromColorSourcePosition(jointPosition);
+
+            var bone2 = clothingGameObject.transform.Find(jointMapping[JointType.ElbowRight]);
+            var jointPosition2 = bodyViewModel.Joints[JointType.ElbowRight].Position;
+            bone2.transform.localPosition = transform.LocalPositionFromColorSourcePosition(jointPosition2);
         }
     }
 }

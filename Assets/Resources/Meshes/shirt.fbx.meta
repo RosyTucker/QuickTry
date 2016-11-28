@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: ea2133a2a2de98c4caf832e59ee5014d
-timeCreated: 1480271612
+timeCreated: 1480369330
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -307,8 +307,6 @@ ModelImporter:
     400296: root
     400298: //RootNode
     400300: shirt
-    2300000: //RootNode
-    3300000: //RootNode
     4300000: shirt
     9500000: //RootNode
     13700000: shirt
@@ -322,17 +320,11 @@ ModelImporter:
     resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
-    animationImportErrors: '
-
-      Imported file ''shirt'' conversion failed: Cannot find root motion transform
-      ''root''
-
-
-'
+    animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
-    animationCompression: 3
+    animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -373,7 +365,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    rootMotionBoneName: root
+    rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
