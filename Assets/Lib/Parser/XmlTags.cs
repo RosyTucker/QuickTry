@@ -4,7 +4,6 @@ namespace Assets.Lib.Parser
     {
         public const string Item = "Item";
         public const string ItemId = "Id";
-        public const string ItemType = "Type";
         public const string ItemTexture = "Texture";
         public const string ItemMesh = "Mesh";
         public const string ItemMaterial = "Material";

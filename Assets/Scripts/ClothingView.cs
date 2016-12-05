@@ -67,6 +67,10 @@ namespace Assets.Scripts
         private static GameObject CreateClothingGameObject(ClothingItem clothingItem)
         {
             var clothingObject = Instantiate(Resources.Load<GameObject>(clothingItem.Mesh));
+            var skinnedMeshRenderer = clothingObject.transform.Find("ClothingMesh").GetComponent<SkinnedMeshRenderer>();
+            var texture = (Texture2D)Resources.Load(clothingItem.Texture, typeof(Texture2D));
+            skinnedMeshRenderer.material = (Material)Resources.Load(clothingItem.Material, typeof(Material));
+            skinnedMeshRenderer.material.mainTexture = texture;
             clothingObject.name = clothingItem.Id;
             return clothingObject;
         }

@@ -30,9 +30,6 @@ namespace Assets.Lib.Parser
             var idNode = childNodes.FirstOrDefault(node => node.Name == XmlTags.ItemId);
             if (idNode == null) throw new FormatException("Item is Missing Id");
 
-            var typeNode = childNodes.FirstOrDefault(node => node.Name == XmlTags.ItemType);
-            if (typeNode == null) throw new FormatException("Item is Missing Type");
-
             var textureNode = childNodes.FirstOrDefault(node => node.Name == XmlTags.ItemTexture);
             if (textureNode == null) throw new XmlSchemaException("Item is Missing " + XmlTags.ItemTexture);
 
@@ -47,13 +44,12 @@ namespace Assets.Lib.Parser
 
 
             var id = idNode.InnerText;
-            var type = typeNode.InnerText.ToEnum<ClothingType>();
             var texture = textureNode.InnerText;
             var material = materialNode.InnerText;
             var mesh = meshNode.InnerText;
             var baseYRotation = int.Parse(baseYRotationNode.InnerText);
 
-            return new ClothingItem(id, type, texture, mesh, material, baseYRotation);
+            return new ClothingItem(id, texture, mesh, material, baseYRotation);
         }
 
 

@@ -5,7 +5,8 @@
 
 Model:
 
+- Make human
 - Blender
 - Origin at mid chest
-- Scale 3.5x
+- Scale 0.239 x 3.5x
 - CMU Mesh

@@ -2,11 +2,17 @@
 
 <Clothing>
   <Item>
-    <Id>Shirt1</Id>
-    <Type>Shirt</Type>
-    <Mesh>Meshes/character</Mesh>
-    <Texture>Textures/M-TShirt</Texture>
-    <Material>Meshes/Materials/ShirtSquare</Material>
+    <Id>Suit1</Id>
+    <Mesh>Meshes/suit</Mesh>
+    <Texture>Textures/suit</Texture>
+    <Material>Meshes/Materials/suit</Material>
+    <BaseYRotation>180</BaseYRotation>
+  </Item>
+  <Item>
+    <Id>Hat1</Id>
+    <Mesh>Meshes/hat</Mesh>
+    <Texture>Textures/hat</Texture>
+    <Material>Meshes/Materials/hat</Material>
     <BaseYRotation>180</BaseYRotation>
   </Item>
 </Clothing>
