@@ -4,52 +4,10 @@
   <Item>
     <Id>Shirt1</Id>
     <Type>Shirt</Type>
-    <Mesh>Meshes/shirt</Mesh>
+    <Mesh>Meshes/character</Mesh>
     <Texture>Textures/M-TShirt</Texture>
     <Material>Meshes/Materials/ShirtSquare</Material>
-    <AttachmentPoints>
-      <Point>
-        <Type>SpineShoulder</Type>
-        <XCoord>10</XCoord>
-        <YCoord>20</YCoord>
-        <ZCoord>0</ZCoord>
-      </Point>
-      <Point>
-        <Type>SpineMid</Type>
-        <XCoord>10</XCoord>
-        <YCoord>15</YCoord>
-        <ZCoord>0</ZCoord>
-      </Point>
-      <Point>
-        <Type>SpineBase</Type>
-        <XCoord>10</XCoord>
-        <YCoord>10</YCoord>
-        <ZCoord>0</ZCoord>
-      </Point>
-      <Point>
-        <Type>HipLeft</Type>
-        <XCoord>8</XCoord>
-        <YCoord>10</YCoord>
-        <ZCoord>0</ZCoord>
-      </Point>
-      <Point>
-        <Type>HipRight</Type>
-        <XCoord>12</XCoord>
-        <YCoord>10</YCoord>
-        <ZCoord>0</ZCoord>
-      </Point>
-      <Point>
-        <Type>ElbowLeft</Type>
-        <XCoord>7</XCoord>
-        <YCoord>13</YCoord>
-        <ZCoord>0</ZCoord>
-      </Point>
-      <Point>
-        <Type>ElbowRight</Type>
-        <XCoord>13</XCoord>
-        <YCoord>13</YCoord>
-        <ZCoord>0</ZCoord>
-      </Point>
-    </AttachmentPoints>
+    <BaseScale>0.239</BaseScale>
+    <BaseYRotation>180</BaseYRotation>
   </Item>
 </Clothing>

@@ -2,6 +2,7 @@
 using System.Linq;
 using Windows.Kinect;
 using Assets.Lib;
+using Assets.Lib.Models;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -56,7 +57,8 @@ namespace Assets.Scripts
             {
                 var jointPosition = joint.Position;
                 var colorPoint = _kinect.Sensor.CoordinateMapper.MapCameraPointToColorSpace(jointPosition);
-                joints[joint.JointType] = new JointViewModel(joint.JointType, joint.TrackingState, new Vector2(colorPoint.X, colorPoint.Y));
+                var orientation = body.JointOrientations[joint.JointType];
+                joints[joint.JointType] = new JointViewModel(joint.JointType, joint.TrackingState, new Vector2(colorPoint.X, colorPoint.Y), orientation.Orientation);
             }
             return joints;
         }

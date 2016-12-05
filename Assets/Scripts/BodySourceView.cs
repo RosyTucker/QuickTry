@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Lib;
+using Assets.Lib.Models;
+using Helper;
 using UnityEngine;
 using Kinect = Windows.Kinect;
 
@@ -50,6 +52,7 @@ namespace Assets.Scripts
         private GameObject CreateBodyObject(ulong id)
         {
             var body = new GameObject("Body:" + id);
+            body.transform.localPosition = new Vector3(0, 0, -1);
             body.transform.parent = gameObject.transform;
             foreach (Kinect.JointType joint in Enum.GetValues(typeof(Kinect.JointType)))
             {

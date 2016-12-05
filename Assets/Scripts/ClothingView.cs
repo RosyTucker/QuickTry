@@ -11,8 +11,9 @@ namespace Assets.Scripts
     {
         public GameObject ClothingManager;
         public GameObject BodySourceManager;
-        
-        private readonly Dictionary<ulong, ClothingForBody> _clothingForBodies = new Dictionary<ulong, ClothingForBody>();
+
+        private readonly Dictionary<ulong, ClothingForBody> _clothingForBodies =
+            new Dictionary<ulong, ClothingForBody>();
 
         void Update()
         {
@@ -40,13 +41,13 @@ namespace Assets.Scripts
         {
             var bodyClothingObject = new GameObject("BodyClothing:" + body.TrackingId);
             bodyClothingObject.AddComponent<BoxCollider>();
-            bodyClothingObject.transform.parent = gameObject.transform;            
-            bodyClothingObject.transform.localPosition = new Vector3(0, -0.5f, 0);
+            bodyClothingObject.transform.parent = gameObject.transform;
+            bodyClothingObject.transform.localPosition = new Vector3(0, 0, 0);
             bodyClothingObject.transform.localScale = new Vector3(1, 1, 1);
             return new ClothingForBody(bodyClothingObject, body.TrackingId);
         }
 
-        private static void UpdateClothesForBody(BodyViewModel body, ClothingForBody clothingForBody,
+        private void UpdateClothesForBody(BodyViewModel body, ClothingForBody clothingForBody,
             Dictionary<string, ClothingItem> newClothes)
         {
             RemoveDeadClothes(new List<string>(newClothes.Keys), clothingForBody);
@@ -54,21 +55,39 @@ namespace Assets.Scripts
             {
                 if (!clothingForBody.Clothes.ContainsKey(clothingItem.Id))
                 {
-                    var clothingObject = CreateClothingGameObject(clothingItem, body);
+                    var clothingObject = CreateClothingGameObject(clothingItem);
                     clothingObject.transform.parent = clothingForBody.BodyObject.transform;
-                    clothingObject.transform.localPosition = new Vector3(0, 0, 0);
+                    clothingObject.transform.Rotate(0, clothingItem.BaseYRotation, 0);
                     clothingForBody.Clothes.Add(clothingItem.Id, clothingObject);
                 }
-                MapClothingObjectPositionsFromBody(clothingForBody.BodyObject.transform, clothingForBody.Clothes[clothingItem.Id], body);
+                MapClothingObjectPositionsFromBody(clothingForBody, clothingItem, body);
             }
         }
 
-        private static GameObject CreateClothingGameObject(ClothingItem clothingItem, BodyViewModel body)
+        private static GameObject CreateClothingGameObject(ClothingItem clothingItem)
         {
             var clothingObject = Instantiate(Resources.Load<GameObject>(clothingItem.Mesh));
-            clothingObject.transform.localEulerAngles = new Vector3(0, 0, 0);
             clothingObject.name = clothingItem.Id;
             return clothingObject;
+        }
+
+        private void MapClothingObjectPositionsFromBody(ClothingForBody clothingForBody, ClothingItem clothingItem, BodyViewModel bodyViewModel)
+        {
+            var clothingGameObject = clothingForBody.Clothes[clothingItem.Id];
+            
+            clothingGameObject.transform.position = transform.LocalPositionFromColorSourcePosition(bodyViewModel.Joints[JointType.SpineMid].Position);
+
+//            clothingGameObject.transform.localScale = Rig.CalculateScale(bodyViewModel.Joints, clothingItem.BaseScale);
+            foreach (var joint in Rig.JointMapping)
+            {
+                var bone = clothingGameObject.transform.Find(joint.Value);
+                var jointModel = bodyViewModel.Joints[joint.Key];
+                bone.transform.rotation = new Quaternion(
+                    jointModel.Orientation.X,
+                    -jointModel.Orientation.Y, // Mirror Y
+                    -jointModel.Orientation.Z, // Mirror X
+                    jointModel.Orientation.W);
+            }
         }
 
         private static void RemoveDeadClothes(ICollection<string> newClothingIds, ClothingForBody clothingForBody)
@@ -102,23 +121,6 @@ namespace Assets.Scripts
 
                 _clothingForBodies.Remove(knownBodyId);
             }
-        }
-
-        private static void MapClothingObjectPositionsFromBody(Transform transform, GameObject clothingGameObject, BodyViewModel bodyViewModel)
-        {
-            var jointMapping = new Dictionary<JointType, string>
-            {
-                {JointType.ElbowRight, "rig/root/MCH-shoulder_rh_ns_ch.L/DEF-upper_arm.01.L" },
-                {JointType.ElbowLeft, "rig/root/MCH-shoulder_rh_ns_ch.R/DEF-upper_arm.01.R" },
-            };
-
-            var bone = clothingGameObject.transform.Find(jointMapping[JointType.ElbowLeft]);
-            var jointPosition = bodyViewModel.Joints[JointType.ElbowLeft].Position;
-            bone.transform.localPosition = transform.LocalPositionFromColorSourcePosition(jointPosition);
-
-            var bone2 = clothingGameObject.transform.Find(jointMapping[JointType.ElbowRight]);
-            var jointPosition2 = bodyViewModel.Joints[JointType.ElbowRight].Position;
-            bone2.transform.localPosition = transform.LocalPositionFromColorSourcePosition(jointPosition2);
         }
     }
 }

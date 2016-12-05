@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using Windows.Kinect;
-
 namespace Assets.Lib.Models
 {
     public class ClothingItem
@@ -8,9 +5,10 @@ namespace Assets.Lib.Models
         public string Texture { get; private set; }
         public string Mesh { get; private set; }
         public string Material { get; private set; }
-        public Dictionary<JointType, ClothingAttachmentPoint> AttachmentPoints { get; private set; }
         public ClothingType Type { get; private set; }
         public string Id { get; private set; }
+        public float BaseScale { get; private set; }
+        public int BaseYRotation { get; private set; }
 
         public ClothingItem(
             string id,
@@ -18,8 +16,8 @@ namespace Assets.Lib.Models
             string texture,
             string mesh,
             string material,
-            Dictionary<JointType,
-            ClothingAttachmentPoint> attachmentPoints
+            float baseScale,
+            int baseYRotation
             )
         {
             Id = id;
@@ -27,7 +25,8 @@ namespace Assets.Lib.Models
             Texture = texture;
             Mesh = mesh;
             Material = material;
-            AttachmentPoints = attachmentPoints;
+            BaseScale = baseScale;
+            BaseYRotation = baseYRotation;
         }
     }
 }

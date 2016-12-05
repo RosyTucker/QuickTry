@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Windows.Kinect;
 
-namespace Assets.Lib
+namespace Assets.Lib.Models
 {
     public class BodyViewModel
     {
