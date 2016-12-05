@@ -77,7 +77,6 @@ namespace Assets.Scripts
             
             clothingGameObject.transform.position = transform.LocalPositionFromColorSourcePosition(bodyViewModel.Joints[JointType.SpineMid].Position);
 
-//            clothingGameObject.transform.localScale = Rig.CalculateScale(bodyViewModel.Joints, clothingItem.BaseScale);
             foreach (var joint in Rig.JointMapping)
             {
                 var bone = clothingGameObject.transform.Find(joint.Value);

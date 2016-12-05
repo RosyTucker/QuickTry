@@ -42,9 +42,6 @@ namespace Assets.Lib.Parser
             var meshNode = childNodes.FirstOrDefault(node => node.Name == XmlTags.ItemMesh);
             if (meshNode == null) throw new XmlSchemaException("Item is Missing " + XmlTags.ItemMesh);
 
-            var baseSizeNode = childNodes.FirstOrDefault(node => node.Name == XmlTags.ItemBaseSize);
-            if (baseSizeNode == null) throw new XmlSchemaException("Item is Missing " + XmlTags.ItemBaseSize);
-
             var baseYRotationNode = childNodes.FirstOrDefault(node => node.Name == XmlTags.ItemBaseYRotation);
             if (baseYRotationNode == null) throw new XmlSchemaException("Item is Missing " + XmlTags.ItemBaseYRotation);
 
@@ -54,10 +51,9 @@ namespace Assets.Lib.Parser
             var texture = textureNode.InnerText;
             var material = materialNode.InnerText;
             var mesh = meshNode.InnerText;
-            var baseSize = float.Parse(baseSizeNode.InnerText);
             var baseYRotation = int.Parse(baseYRotationNode.InnerText);
 
-            return new ClothingItem(id, type, texture, mesh, material, baseSize, baseYRotation);
+            return new ClothingItem(id, type, texture, mesh, material, baseYRotation);
         }
 
 

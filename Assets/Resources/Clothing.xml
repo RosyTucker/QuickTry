@@ -7,7 +7,6 @@
     <Mesh>Meshes/character</Mesh>
     <Texture>Textures/M-TShirt</Texture>
     <Material>Meshes/Materials/ShirtSquare</Material>
-    <BaseScale>0.239</BaseScale>
     <BaseYRotation>180</BaseYRotation>
   </Item>
 </Clothing>

@@ -7,7 +7,6 @@ namespace Assets.Lib.Models
         public string Material { get; private set; }
         public ClothingType Type { get; private set; }
         public string Id { get; private set; }
-        public float BaseScale { get; private set; }
         public int BaseYRotation { get; private set; }
 
         public ClothingItem(
@@ -16,7 +15,6 @@ namespace Assets.Lib.Models
             string texture,
             string mesh,
             string material,
-            float baseScale,
             int baseYRotation
             )
         {
@@ -25,7 +23,6 @@ namespace Assets.Lib.Models
             Texture = texture;
             Mesh = mesh;
             Material = material;
-            BaseScale = baseScale;
             BaseYRotation = baseYRotation;
         }
     }

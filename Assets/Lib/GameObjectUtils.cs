@@ -6,7 +6,7 @@ using Debug = System.Diagnostics.Debug;
 
 namespace Assets.Lib
 {
-    class GameObjectUtils
+    public class GameObjectUtils
     {
         public static BodyViewModel[] GetUpdatedBodyData(GameObject bodySourceManager)
         {

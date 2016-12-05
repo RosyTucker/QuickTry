@@ -42,18 +42,5 @@ namespace Assets.Lib
                 {JointType.AnkleRight,"CMU compliant skeleton/Hips/RHipJoint/RightUpLeg/RightLeg" },
                 {JointType.FootRight,"CMU compliant skeleton/Hips/RHipJoint/RightUpLeg/RightLeg/RightFoot" }
             };
-
-        public static Vector3 CalculateScale(Dictionary<JointType, JointViewModel> joints, float baseSize)
-        {
-            var top = joints[JointType.Head].Position;
-            var bottom = joints[JointType.Head].Position;
-            var y = Vector3.Distance(top, bottom)/ baseSize;
-
-            var left = joints[JointType.ShoulderLeft].Position;
-            var right = joints[JointType.ShoulderRight].Position;
-            var x = Vector3.Distance(left, right)/baseSize;
-
-            return new Vector3(x, y, baseSize);
-        }
     }
 }

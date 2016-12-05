@@ -58,7 +58,10 @@ namespace Assets.Scripts
                 var jointPosition = joint.Position;
                 var colorPoint = _kinect.Sensor.CoordinateMapper.MapCameraPointToColorSpace(jointPosition);
                 var orientation = body.JointOrientations[joint.JointType];
-                joints[joint.JointType] = new JointViewModel(joint.JointType, joint.TrackingState, new Vector2(colorPoint.X, colorPoint.Y), orientation.Orientation);
+                joints[joint.JointType] = new JointViewModel(
+                    joint.JointType,
+                    joint.TrackingState,
+                    new Vector2(colorPoint.X, colorPoint.Y), orientation.Orientation);
             }
             return joints;
         }
