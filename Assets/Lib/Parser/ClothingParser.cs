@@ -13,7 +13,7 @@ namespace Assets.Lib.Parser
     {
         public static Dictionary<string, ClothingItem> Parse(string filePath)
         {
-            var clothingFile = (TextAsset)Resources.Load(filePath);
+            var clothingFile = (TextAsset) Resources.Load(filePath);
             var clothingXml = new XmlDocument();
             clothingXml.LoadXml(clothingFile.text);
             var itemsXml = clothingXml.GetElementsByTagName(XmlTags.Item);
@@ -39,19 +39,25 @@ namespace Assets.Lib.Parser
             var meshNode = childNodes.FirstOrDefault(node => node.Name == XmlTags.ItemMesh);
             if (meshNode == null) throw new XmlSchemaException("Item is Missing " + XmlTags.ItemMesh);
 
+            var rootMeshNameNode = childNodes.FirstOrDefault(node => node.Name == XmlTags.ItemRootMeshName);
+            if (rootMeshNameNode == null) throw new XmlSchemaException("Item is Missing " + XmlTags.ItemRootMeshName);
+
             var baseYRotationNode = childNodes.FirstOrDefault(node => node.Name == XmlTags.ItemBaseYRotation);
             if (baseYRotationNode == null) throw new XmlSchemaException("Item is Missing " + XmlTags.ItemBaseYRotation);
+
+            var baseScaleNode = childNodes.FirstOrDefault(node => node.Name == XmlTags.ItemBaseScale);
+            if (baseScaleNode == null) throw new XmlSchemaException("Item is Missing " + XmlTags.ItemBaseScale);
 
 
             var id = idNode.InnerText;
             var texture = textureNode.InnerText;
             var material = materialNode.InnerText;
             var mesh = meshNode.InnerText;
+            var rootMeshName = rootMeshNameNode.InnerText;
             var baseYRotation = int.Parse(baseYRotationNode.InnerText);
+            var baseScale = float.Parse(baseScaleNode.InnerText);
 
-            return new ClothingItem(id, texture, mesh, material, baseYRotation);
+            return new ClothingItem(id, texture, mesh, rootMeshName, material, baseYRotation, baseScale);
         }
-
-
     }
 }

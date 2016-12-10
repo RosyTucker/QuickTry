@@ -17,14 +17,5 @@ namespace Assets.Scripts
             AllClothing = ClothingParser.Parse(ClothingFilePath);
             AssignedClothing = AllClothing;
         }      
-
-        void Update()
-        {
-      
-        }
-
-        void OnApplicationQuit()
-        {
-        }
     }
 }

@@ -42,8 +42,6 @@ namespace Assets.Scripts
             var bodyClothingObject = new GameObject("BodyClothing:" + body.TrackingId);
             bodyClothingObject.AddComponent<BoxCollider>();
             bodyClothingObject.transform.parent = gameObject.transform;
-            bodyClothingObject.transform.localPosition = new Vector3(0, 0, 0);
-            bodyClothingObject.transform.localScale = new Vector3(1, 1, 1);
             return new ClothingForBody(bodyClothingObject, body.TrackingId);
         }
 
@@ -60,27 +58,30 @@ namespace Assets.Scripts
                     clothingObject.transform.Rotate(0, clothingItem.BaseYRotation, 0);
                     clothingForBody.Clothes.Add(clothingItem.Id, clothingObject);
                 }
-                MapClothingObjectPositionsFromBody(clothingForBody, clothingItem, body);
+                MoveClothingObjectToBody(clothingForBody, clothingItem, body);
             }
         }
 
         private static GameObject CreateClothingGameObject(ClothingItem clothingItem)
         {
             var clothingObject = Instantiate(Resources.Load<GameObject>(clothingItem.Mesh));
-            var skinnedMeshRenderer = clothingObject.transform.Find("ClothingMesh").GetComponent<SkinnedMeshRenderer>();
+            var skinnedMeshRenderer = clothingObject.transform.Find(clothingItem.RootMeshName).GetComponent<SkinnedMeshRenderer>();
             var texture = (Texture2D)Resources.Load(clothingItem.Texture, typeof(Texture2D));
             skinnedMeshRenderer.material = (Material)Resources.Load(clothingItem.Material, typeof(Material));
             skinnedMeshRenderer.material.mainTexture = texture;
             clothingObject.name = clothingItem.Id;
+
             return clothingObject;
         }
 
-        private void MapClothingObjectPositionsFromBody(ClothingForBody clothingForBody, ClothingItem clothingItem, BodyViewModel bodyViewModel)
+        private void MoveClothingObjectToBody(ClothingForBody clothingForBody, ClothingItem clothingItem,
+            BodyViewModel bodyViewModel)
         {
             var clothingGameObject = clothingForBody.Clothes[clothingItem.Id];
-            
-            clothingGameObject.transform.position = transform.LocalPositionFromColorSourcePosition(bodyViewModel.Joints[JointType.SpineMid].Position);
 
+            clothingGameObject.transform.position =
+                transform.LocalPositionFromColorSourcePosition(bodyViewModel.Joints[JointType.SpineMid].Position);
+            clothingGameObject.transform.localScale = GetClothingObjectScale(bodyViewModel, clothingItem);
             foreach (var joint in Rig.JointMapping)
             {
                 var bone = clothingGameObject.transform.Find(joint.Value);
@@ -93,6 +94,18 @@ namespace Assets.Scripts
             }
         }
 
+        private Vector3 GetClothingObjectScale(BodyViewModel bodyViewModel, ClothingItem clothingItem)
+        {
+            var headY = transform.LocalPositionFromColorSourcePosition(bodyViewModel.Joints[JointType.Head].Position).y;
+            var footY = Mathf.Min(
+                transform.LocalPositionFromColorSourcePosition(bodyViewModel.Joints[JointType.FootLeft].Position).y,
+                transform.LocalPositionFromColorSourcePosition(bodyViewModel.Joints[JointType.FootRight].Position).y);
+
+            var bodyYDistance = Mathf.Abs(footY - headY);
+            var newScale = bodyYDistance / clothingItem.BaseScale;
+            return new Vector3(newScale, newScale, newScale);
+        }
+
         private static void RemoveDeadClothes(ICollection<string> newClothingIds, ClothingForBody clothingForBody)
         {
             var existingClothingIds = new List<string>(clothingForBody.Clothes.Keys);
@@ -100,9 +113,9 @@ namespace Assets.Scripts
             {
                 if (newClothingIds.Contains(knownClothingId)) continue;
 
-                var objectToRemove = clothingForBody.Clothes[knownClothingId];
+                var clothingToRemove = clothingForBody.Clothes[knownClothingId];
 
-                Destroy(objectToRemove);
+                Destroy(clothingToRemove);
 
                 clothingForBody.Clothes.Remove(knownClothingId);
             }

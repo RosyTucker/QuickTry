@@ -6,8 +6,9 @@ namespace Assets.Lib.Parser
         public const string ItemId = "Id";
         public const string ItemTexture = "Texture";
         public const string ItemMesh = "Mesh";
+        public const string ItemRootMeshName = "RootMeshName";
         public const string ItemMaterial = "Material";
-        public const string ItemBaseSize = "BaseScale";
+        public const string ItemBaseScale = "BaseScale";
         public const string ItemBaseYRotation = "BaseYRotation";
     }
 }
