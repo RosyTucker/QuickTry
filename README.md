@@ -8,4 +8,4 @@ Model:
 - Blender
 - Origin at mid chest
 - Scale at 1.00
-- Export skeleton and Mesh
+- Export skeleton and Mesh - skeleton must be called skeleton
