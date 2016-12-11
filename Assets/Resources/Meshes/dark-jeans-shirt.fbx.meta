@@ -1,0 +1,156 @@
+fileFormatVersion: 2
+guid: e36a526c5004b5d4d964c7dac45efcf4
+timeCreated: 1481409128
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: dark-jeans-shirt
+    100002: //RootNode
+    100004: Head
+    100006: Head_end
+    100008: Hips
+    100010: LeftArm
+    100012: LeftFingerBase
+    100014: LeftFoot
+    100016: LeftForeArm
+    100018: LeftHand
+    100020: LeftHandFinger1
+    100022: LeftHandFinger1_end
+    100024: LeftLeg
+    100026: LeftShoulder
+    100028: LeftToeBase
+    100030: LeftToeBase_end
+    100032: LeftUpLeg
+    100034: LHipJoint
+    100036: LowerBack
+    100038: LThumb
+    100040: LThumb_end
+    100042: Neck
+    100044: Neck1
+    100046: RHipJoint
+    100048: RightArm
+    100050: RightFingerBase
+    100052: RightFoot
+    100054: RightForeArm
+    100056: RightHand
+    100058: RightHandFinger1
+    100060: RightHandFinger1_end
+    100062: RightLeg
+    100064: RightShoulder
+    100066: RightToeBase
+    100068: RightToeBase_end
+    100070: RightUpLeg
+    100072: RThumb
+    100074: RThumb_end
+    100076: skeleton
+    100078: Spine
+    100080: Spine1
+    400000: dark-jeans-shirt
+    400002: //RootNode
+    400004: Head
+    400006: Head_end
+    400008: Hips
+    400010: LeftArm
+    400012: LeftFingerBase
+    400014: LeftFoot
+    400016: LeftForeArm
+    400018: LeftHand
+    400020: LeftHandFinger1
+    400022: LeftHandFinger1_end
+    400024: LeftLeg
+    400026: LeftShoulder
+    400028: LeftToeBase
+    400030: LeftToeBase_end
+    400032: LeftUpLeg
+    400034: LHipJoint
+    400036: LowerBack
+    400038: LThumb
+    400040: LThumb_end
+    400042: Neck
+    400044: Neck1
+    400046: RHipJoint
+    400048: RightArm
+    400050: RightFingerBase
+    400052: RightFoot
+    400054: RightForeArm
+    400056: RightHand
+    400058: RightHandFinger1
+    400060: RightHandFinger1_end
+    400062: RightLeg
+    400064: RightShoulder
+    400066: RightToeBase
+    400068: RightToeBase_end
+    400070: RightUpLeg
+    400072: RThumb
+    400074: RThumb_end
+    400076: skeleton
+    400078: Spine
+    400080: Spine1
+    4300000: dark-jeans-shirt
+    9500000: //RootNode
+    13700000: dark-jeans-shirt
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
