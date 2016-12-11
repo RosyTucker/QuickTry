@@ -1,33 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Clothing>
-  <!--  <Item>-->
-  <!--    <Id>Suit</Id>-->
-  <!--    <Mesh>Meshes/suit</Mesh>-->
-  <!--    <RootMeshName>suit</RootMeshName>-->
-  <!--    <Texture>Textures/suit</Texture>-->
-  <!--    <Material>Meshes/Materials/suit</Material>-->
-  <!--    <BaseYRotation>180</BaseYRotation>-->
-  <!--    <BaseScale>13.5</BaseScale>-->
-  <!--  </Item>-->
-  <!--  <Item>-->
-  <!--    <Id>Jeans-Top</Id>-->
-  <!--    <Mesh>Meshes/jeans-top</Mesh>-->
-  <!--    <RootMeshName>jeans-top</RootMeshName>-->
-  <!--    <Texture>Textures/jeans-top</Texture>-->
-  <!--    <Material>Meshes/Materials/jeans-top</Material>-->
-  <!--    <BaseYRotation>180</BaseYRotation>-->
-  <!--    <BaseScale>13.5</BaseScale>-->
-  <!--  </Item>-->
-  <!--  <Item>-->
-  <!--    <Id>Jeans-Shirt</Id>-->
-  <!--    <Mesh>Meshes/jeans-shirt</Mesh>-->
-  <!--    <RootMeshName>jeans-shirt</RootMeshName>-->
-  <!--    <Texture>Textures/jeans-shirt</Texture>-->
-  <!--    <Material>Meshes/Materials/jeans-shirt</Material>-->
-  <!--    <BaseYRotation>180</BaseYRotation>-->
-  <!--    <BaseScale>13.5</BaseScale>-->
-  <!--  </Item>-->
+  <Item>
+    <Id>Suit</Id>
+    <Mesh>Meshes/suit</Mesh>
+    <RootMeshName>suit</RootMeshName>
+    <Texture>Textures/suit</Texture>
+    <Material>Meshes/Materials/suit</Material>
+    <BaseYRotation>180</BaseYRotation>
+    <BaseScale>13.5</BaseScale>
+  </Item>
+  <Item>
+    <Id>Jeans-Top</Id>
+    <Mesh>Meshes/jeans-top</Mesh>
+    <RootMeshName>jeans-top</RootMeshName>
+    <Texture>Textures/jeans-top</Texture>
+    <Material>Meshes/Materials/jeans-top</Material>
+    <BaseYRotation>180</BaseYRotation>
+    <BaseScale>13.5</BaseScale>
+  </Item>
+  <Item>
+    <Id>Jeans-Shirt</Id>
+    <Mesh>Meshes/jeans-shirt</Mesh>
+    <RootMeshName>jeans-shirt</RootMeshName>
+    <Texture>Textures/jeans-shirt</Texture>
+    <Material>Meshes/Materials/jeans-shirt</Material>
+    <BaseYRotation>180</BaseYRotation>
+    <BaseScale>13.5</BaseScale>
+  </Item>
   <Item>
     <Id>Jeans-Jacket</Id>
     <Mesh>Meshes/jeans-jacket</Mesh>
@@ -37,13 +37,13 @@
     <BaseYRotation>180</BaseYRotation>
     <BaseScale>13.5</BaseScale>
   </Item>
-<!--  <Item>-->
-<!--    <Id>Dark-Jeans-Shirt</Id>-->
-<!--    <Mesh>Meshes/dark-jeans-shirt</Mesh>-->
-<!--    <RootMeshName>dark-jeans-shirt</RootMeshName>-->
-<!--    <Texture>Textures/dark-jeans-shirt</Texture>-->
-<!--    <Material>Meshes/Materials/dark-jeans-shirt</Material>-->
-<!--    <BaseYRotation>180</BaseYRotation>-->
-<!--    <BaseScale>13.5</BaseScale>-->
-<!--  </Item>-->
+  <Item>
+    <Id>Dark-Jeans-Shirt</Id>
+    <Mesh>Meshes/dark-jeans-shirt</Mesh>
+    <RootMeshName>dark-jeans-shirt</RootMeshName>
+    <Texture>Textures/dark-jeans-shirt</Texture>
+    <Material>Meshes/Materials/dark-jeans-shirt</Material>
+    <BaseYRotation>180</BaseYRotation>
+    <BaseScale>13.5</BaseScale>
+  </Item>
 </Clothing>
